@@ -1,8 +1,34 @@
 import React from "react";
 import { Col, Figure, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { validate } from "../utils/validate"
+import { login } from "../utils/api-client";
 
 export default function Login() {
+  const [isLoading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState(null);
+
+  async function handleSubmit(event) {
+    try {
+      event.preventDefault();
+      setLoading(true);
+      setError(null);
+
+      const rawUsername = event.target.elements.username.value;
+      const rawPassword = event.target.elements.password.value;
+
+      const username = validate(rawUsername, "username", {
+        min_length: 4
+      });
+      const password = validate(rawPassword, "password");
+      await login({ username, password });
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <Col style={{ maxWidth: "400px" }} className="mx-auto border px-3 pb-3">
       <Figure className="d-flex flex-column align-items-center">
@@ -15,8 +41,8 @@ export default function Login() {
         />
       </Figure>
       <h5 className="font-weight-bolder">See what’s happening now.</h5>
-      <fieldset>
-        <Form>
+      <fieldset disabled={isLoading}>
+        <Form onSubmit={handleSubmit}>
           <Form.Group controlId="username">
             <Form.Label>Username</Form.Label>
             <Form.Control type="text" name="username" autoCapitalize="off" />
@@ -30,7 +56,7 @@ export default function Login() {
               <Link to="/help">Forgot password?</Link>
             </small>
             <br />
-            <small className="text-danger">error</small>
+            <small className="text-danger">{error}</small>
           </p>
           <div className="d-flex flex-column align-items-center">
             <button

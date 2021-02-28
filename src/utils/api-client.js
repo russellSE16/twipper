@@ -7,11 +7,20 @@ export async function authenticate() {
     .then(res => res.data.user);
 }
 
-export async function login() {}
+export async function login(payload) {
+    await client.post('/auth/login', payload);
+    window.location.pathname = '/'; //Refreshes page after making the post request for login
+}
 
-export async function signup() {}
+export async function signup(payload) {
+    await client.post('/auth/signup', payload);
+    window.location.pathname = '/'; //Refreshes page after making the post request for signup
+}
 
-export async function logout() {}
+export async function logout() {
+    await client.get('/auth/logout');
+    window.location.pathname = '/'; //Refreshes page after logout
+}
 
 export async function getNotifications() {}
 

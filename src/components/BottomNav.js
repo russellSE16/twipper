@@ -6,8 +6,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { Badge } from "react-bootstrap";
 import { Link, NavLink } from "react-router-dom";
+import { useAuthUser } from "../context/auth-context";
 
 export default function BottomNav() {
+  const authUser = useAuthUser();
+  
   const list = [
     {
       name: "Home",
@@ -27,7 +30,7 @@ export default function BottomNav() {
     },
     {
       name: "Profile",
-      href: `/user/auth-user-screenname`,
+      href: `/user/${authUser?.screen_name}`,
       icon: faUser,
     },
   ];

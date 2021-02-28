@@ -13,8 +13,11 @@ import { Badge, Col } from "react-bootstrap";
 import { useQuery } from "react-query";
 import MediaQuery from "react-responsive";
 import { Link, NavLink } from "react-router-dom";
+import { useAuthUser } from "../context/auth-context";
 
 export default function Header() {
+  const authUser = useAuthUser();
+  
   const list = [
     {
       name: "Home",
@@ -28,7 +31,7 @@ export default function Header() {
     },
     {
       name: "Profile",
-      href: `/user/authuser-screen-name`,
+      href: `/user/${authUser?.screen_name}`,
       icon: faUser,
     },
     {

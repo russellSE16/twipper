@@ -1,8 +1,40 @@
 import React from "react";
 import { Col, Figure, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { validate } from "../utils/validate";
+import { signup } from "../utils/api-client";
 
 export default function Signup() {
+  const [isLoading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState(null);
+
+  async function handleSubmit(event) {
+    try {
+      event.preventDefault();
+      setLoading(true);
+      setError(null);
+
+      const rawFullName = event.target.elements.fullname.value;
+      const rawUsername = event.target.elements.username.value;
+      const rawPassword = event.target.elements.password.value;
+
+      const fullName = validate(rawFullName, "name", {
+        min_length: 4
+      });
+      const username = validate(rawUsername, "username", {
+        min_length: 4
+      });
+      const password = validate(rawPassword, "password", {
+        min_length: 8
+      });
+      await signup({ fullName, username, password });
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+  
   return (
     <Col style={{ maxWidth: "400px" }} className="mx-auto border px-3 pb-3">
       <Figure className="d-flex flex-column align-items-center">
@@ -15,8 +47,8 @@ export default function Signup() {
         />
       </Figure>
       <h5 className="font-weight-bolder">See what’s happening now.</h5>
-      <fieldset>
-        <Form>
+      <fieldset disabled={isLoading}>
+        <Form onSubmit={handleSubmit}>
           <Form.Group controlId="username">
             <Form.Label>
               Choose a username - <small className="text-muted">required</small>
@@ -49,7 +81,7 @@ export default function Signup() {
               Already have an account? <Link to="/login">Log in instead</Link>
             </small>
             <br />
-            <small className="text-danger">error</small>
+            <small className="text-danger">{error}</small>
           </p>
           <div className="d-flex flex-column align-items-center">
             <button
