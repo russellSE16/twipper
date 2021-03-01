@@ -14,7 +14,7 @@ export async function login(payload) {
 
 export async function signup(payload) {
     await client.post('/auth/signup', payload);
-    window.location.pathname = '/'; //Refreshes page after making the post request for signup
+    window.location.assign('/settings/profile?redirected=true'); 
 }
 
 export async function logout() {
@@ -60,7 +60,9 @@ export async function unrepostPost() {}
 
 export async function repostPost() {}
 
-export async function updateUserDetails() {}
+export async function updateUserDetails(user) {
+    await client.post('/api/updateuser', user);
+}
 
 export async function createPost() {}
 
