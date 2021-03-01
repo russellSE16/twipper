@@ -27,7 +27,7 @@ export default function Signup() {
       const password = validate(rawPassword, "password", {
         min_length: 8
       });
-      await signup({ fullName, username, password });
+      await signup({ fullname: fullName, username, password });
     } catch (error) {
       setError(error.message);
     } finally {
