@@ -1,6 +1,8 @@
 import DOMPurify from "dompurify";
 
-export function isTextValid() {}
+export function isTextValid(text) {
+  return Boolean(DOMPurify.sanitize(text, { ALLOWED_TAGS: [] }).trim());
+}
 
 export function validate(
   input = "",
