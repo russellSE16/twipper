@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { queryClient } from '../AppProviders';
 
 const client = axios.create();
 
@@ -55,20 +56,37 @@ export async function getTrends() {}
 
 export async function getSearchResults() {}
 
-export async function likePost() {}
+export async function likePost(post) {
+    await client.get(`/api/like/${post.id_str}`);
+    await queryClient.invalidateQueries('Posts');
+}
 
-export async function unlikePost() {}
+export async function unlikePost(post) {
+    await client.get(`/api/unlike/${post.id_str}`);
+    await queryClient.invalidateQueries('Posts');
+}
 
-export async function unrepostPost() {}
+export async function unretweetPost(post) {
+    await client.post('/api/unrepost', post);
+    await queryClient.invalidateQueries('Posts');
+}
 
-export async function repostPost() {}
+export async function retweetPost(post) {
+    await client.post('/api/repost', post);
+    await queryClient.invalidateQueries('Posts');
+}
 
 export async function updateUserDetails(user) {
     await client.post('/api/updateuser', user);
+    await queryClient.invalidateQueries('AuthProvider');//Added to solve issue when updating profile of old data remaining until refresh
 }
 
-export async function createPost(post) {
-    await client.post('/api/post', post);
+export async function createPost(post, url = '/api/post') {
+    await client.post(url, post);
+    await queryClient.invalidateQueries('Posts');
 }
 
-export async function getPostById() {}
+export async function getPostById(postId) {
+    return await client.get(`/api/post/${postId}`)
+    .then(res => res.data.post);
+}

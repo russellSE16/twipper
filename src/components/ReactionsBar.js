@@ -7,8 +7,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { likePost, unlikePost, retweetPost, unretweetPost } from "../utils/api-client";
 
-export default function ReactionsBar() {
+export default function ReactionsBar({ post }) {
+  function handleToggleLike() {
+    post.favorited ? unlikePost(post) : likePost(post);
+  }
+
+  function handleToggleRetweet() {
+    post.retweeted ? unretweetPost(post) : retweetPost(post);
+  }
+  
   return (
     <div className="d-flex align-items-center">
       <Dropdown drop="up" className="bg-clear high-index">
@@ -16,28 +25,32 @@ export default function ReactionsBar() {
           className="btn btn-naked-primary rounded-pill"
           id="comment-dropdown"
         >
-          {"retweeted" ? (
+          {post.retweeted ? (
             <FontAwesomeIcon icon={commentSolid} className="text-success" />
           ) : (
             <FontAwesomeIcon icon={faComment} />
           )}
-          <small className="m-1">Retweet Count</small>
+          <small className="m-1">{post.retweet_count}</small>
         </Dropdown.Toggle>
         <Dropdown.Menu alignRight className="higher-index rounded-0">
-          <Dropdown.Item className="high-index" as="button">
-            {"Retweeted" ? "Undo Repost" : "Repost"}
+          <Dropdown.Item 
+            onClick={handleToggleRetweet}
+            className="high-index" 
+            as="button"
+          >
+            {post.retweeted ? "Undo retweet" : "Retweet"}
           </Dropdown.Item>
           <Dropdown.Item
             as={Link}
             className="high-index"
-            to={`/compose/post?quote=post-id-str`}
+            to={`/compose/post?quote=${post.id_str}`}
           >
-            Quote this post
+            Quote tweet
           </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
       <Link
-        to={`/compose/post?reply_to=post-id-str`}
+        to={`/compose/post?reply_to=${post.id_str}`}
         className="btn btn-naked-secondary rounded-pill high-index"
       >
         <FontAwesomeIcon
@@ -46,13 +59,13 @@ export default function ReactionsBar() {
           icon={faReply}
         />
       </Link>
-      <button className="btn btn-naked-danger rounded-pill high-index">
-        {"favorited" ? (
+      <button onClick={handleToggleLike} className="btn btn-naked-danger rounded-pill high-index">
+        {post.favorited ? (
           <FontAwesomeIcon icon={heartSolid} className="text-danger" />
         ) : (
           <FontAwesomeIcon icon={faHeart} />
         )}
-        <small className="m-1">Favorite Count</small>
+        <small className="m-1">{post.favorite_count}</small>
       </button>
     </div>
   );
