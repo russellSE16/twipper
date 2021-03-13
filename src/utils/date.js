@@ -10,7 +10,9 @@ export function formatCreatedAt(timestamp) {
 
 // https://date-fns.org/v2.17.0/docs/format
 export function formatDate(timestamp) {
-    return format(new Date(timestamp), "do MMM, yyyy");
+    return format(new Date(timestamp), 'do MMM, yyyy');
 }
 
-export function formatTime() {}
+export function formatTime(timestamp) {
+    return format(new Date(timestamp), 'pp')
+}
