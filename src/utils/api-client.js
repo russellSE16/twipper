@@ -36,8 +36,8 @@ export async function getReplies(postId) {
 
 export async function getUserTimeline() {}
 
-export async function getPosts() {
-    return await client.get('/api/home_timeline')
+export async function getPosts({ pageParam = 1}) {
+    return await client.get(`/api/home_timeline?p=${pageParam}`)
     .then(res => res.data.posts);
 }
 

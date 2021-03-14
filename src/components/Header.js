@@ -10,7 +10,7 @@ import { faHome } from "@fortawesome/free-solid-svg-icons/faHome";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { Badge, Col } from "react-bootstrap";
-import { useQuery } from "react-query";
+// import { useQuery } from "react-query";
 import MediaQuery from "react-responsive";
 import { Link, NavLink } from "react-router-dom";
 import { useAuthUser } from "../context/auth-context";
