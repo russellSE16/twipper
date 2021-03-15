@@ -10,6 +10,7 @@ export default function UserItem({ user, noPop, compact }) {
     <ListGroup.Item
       className="px-1 text-truncate"
       action
+      user={user}
       as={noPop ? Link : UserLink}
       to={`/user/${user.screen_name}`}
     >
