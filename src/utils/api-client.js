@@ -72,7 +72,10 @@ export async function getUserSuggestions() {
     .then(res => res.data.users);
 }
 
-export async function getTrends() {}
+export async function getTrends() {
+    return await client.get('/api/trends')
+    .then(res => res.data.trends);
+}
 
 export async function getSearchResults() {}
 
