@@ -77,7 +77,10 @@ export async function getTrends() {
     .then(res => res.data.trends);
 }
 
-export async function getSearchResults() {}
+export async function getSearchResults(query) {
+    return await client.get(`/api/search?q=${encodeURIComponent(query)}`)
+    .then(res => res.data);
+}
 
 export async function likePost(post) {
     await client.get(`/api/like/${post.id_str}`);
