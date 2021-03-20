@@ -63,9 +63,15 @@ export async function getPostReposts(postId) {
     .then(res => res.data.users);
 }
 
-export async function getUserFollowers() {}
+export async function getUserFollowers(username) {
+    return await client.get(`/api/followers/${username}`)
+    .then(res => res.data.users);
+}
 
-export async function getFriends() {}
+export async function getFriends(username) {
+    return await client.get(`/api/friends/${username}`)
+    .then(res => res.data.users);
+}
 
 export async function getUserSuggestions() {
     return await client.get('/api/users')
