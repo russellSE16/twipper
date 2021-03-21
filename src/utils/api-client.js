@@ -23,9 +23,15 @@ export async function logout() {
     window.location.pathname = '/'; //Refreshes page after logout
 }
 
-export async function getNotifications() {}
+export async function getNotifications() {
+    return await client.get('/api/notifications')
+    .then(res => res.data.notifications);
+}
 
-export function readNotification() {}
+export async function readNotification(notification) {
+    await client.get(`/api/notification_read/${notification._id}`);
+    await queryClient.invalidateQueries('Notifications'); //Added to ensure notification counter updates immediately.
+}
 
 export async function getPost() {}
 
@@ -34,7 +40,10 @@ export async function getReplies(postId) {
     .then(res => res.data.posts);
 }
 
-export async function getUserTimeline() {}
+export async function getUserTimeline(username) {
+    return await client.get(`/api/user_timeline/${username}`)
+    .then(res => res.data);
+}
 
 export async function getPosts({ pageParam = 1}) {
     return await client.get(`/api/home_timeline?p=${pageParam}`)

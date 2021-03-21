@@ -5,11 +5,16 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { Badge } from "react-bootstrap";
+import { useQuery } from "react-query";
 import { Link, NavLink } from "react-router-dom";
 import { useAuthUser } from "../context/auth-context";
+import { getNotifications } from "../utils/api-client";
 
 export default function BottomNav() {
   const authUser = useAuthUser();
+  const { data: notifications } = useQuery('Notifications', getNotifications);
+
+  const notificationsCount = notifications?.filter(notification => !notification.read).length;
   
   const list = [
     {
@@ -26,7 +31,7 @@ export default function BottomNav() {
       name: "Notifications",
       href: "/notifications",
       icon: faBell,
-      count: 0,
+      count: notificationsCount,
     },
     {
       name: "Profile",

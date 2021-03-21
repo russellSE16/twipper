@@ -10,13 +10,17 @@ import { faHome } from "@fortawesome/free-solid-svg-icons/faHome";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { Badge, Col } from "react-bootstrap";
-// import { useQuery } from "react-query";
+import { useQuery } from "react-query";
 import MediaQuery from "react-responsive";
 import { Link, NavLink } from "react-router-dom";
 import { useAuthUser } from "../context/auth-context";
+import { getNotifications } from "../utils/api-client";
 
 export default function Header() {
   const authUser = useAuthUser();
+  const { data: notifications } = useQuery('Notifications', getNotifications);
+
+  const notificationsCount = notifications?.filter(notification => !notification.read).length;
   
   const list = [
     {
@@ -38,7 +42,7 @@ export default function Header() {
       name: "Notifications",
       href: "/notifications",
       icon: faBell,
-      count: 0,
+      count: notificationsCount,
     },
     {
       name: "Chat Room",
