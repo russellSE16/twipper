@@ -19,7 +19,7 @@ export default function Explore({ noSearchBar }) {
     </div>
     <Switch>
       <Route path="/explore/users">
-        <Heading title="Users" />
+        <Heading title="Users" backButton />
         <UserSuggestions noPop length={10} />
       </Route>
       <Route path="/">
@@ -30,7 +30,7 @@ export default function Explore({ noSearchBar }) {
             length={4}
           />
         </MediaQuery>
-        <Heading title="Trends near you" />
+        <Heading title="Trends near you" backButton/>
         <Figure className="d-flex flex-column">
           <Figure.Image src="/img/twitter-home.png" alt="trends" />
         </Figure>
